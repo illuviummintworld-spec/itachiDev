@@ -1,5 +1,5 @@
 """Pydantic schemas for request/response validation"""
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional, Dict, Any
 from datetime import datetime
 
@@ -10,15 +10,14 @@ class EmailRequest(BaseModel):
 
 class EmailVerificationResponse(BaseModel):
     """Email verification response"""
+    model_config = ConfigDict(from_attributes=True)
+    
     email: str
     status: str
     smtp_valid: bool
     disposable: bool
     breach_found: bool
     details: Optional[Dict[str, Any]] = None
-    
-    class Config:
-        from_attributes = True
 
 # User Schemas
 class UserBase(BaseModel):
@@ -32,12 +31,11 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     """User response schema"""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     is_active: bool
     created_at: datetime
-    
-    class Config:
-        from_attributes = True
 
 # Scan Schemas
 class ScanRequest(BaseModel):
@@ -47,19 +45,18 @@ class ScanRequest(BaseModel):
 
 class ScanResponse(BaseModel):
     """Generic scan response"""
+    model_config = ConfigDict(from_attributes=True)
+    
     id: int
     scan_type: str
     target: str
     status: str
     created_at: datetime
     completed_at: Optional[datetime] = None
-    
-    class Config:
-        from_attributes = True
 
 # Health Check
 class HealthResponse(BaseModel):
     """Health check response"""
     status: str
     version: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now())
