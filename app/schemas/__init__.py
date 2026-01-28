@@ -1,7 +1,7 @@
 """Pydantic schemas for request/response validation"""
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional, Dict, Any
-from datetime import datetime
+from datetime import datetime, UTC
 
 # Email Schemas
 class EmailRequest(BaseModel):
@@ -59,4 +59,4 @@ class HealthResponse(BaseModel):
     """Health check response"""
     status: str
     version: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now())
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))

@@ -32,13 +32,22 @@ async def predict_email_variations(domain: str, first_name: str, last_name: str)
     
     Returns common email pattern variations
     """
+    # Validate input
+    if not first_name or not last_name:
+        raise HTTPException(status_code=400, detail="First name and last name are required")
+    
+    first = first_name.lower()
+    last = last_name.lower()
+    first_initial = first[0] if first else ""
+    last_initial = last[0] if last else ""
+    
     variations = [
-        f"{first_name.lower()}.{last_name.lower()}@{domain}",
-        f"{first_name.lower()}{last_name.lower()}@{domain}",
-        f"{first_name[0].lower()}{last_name.lower()}@{domain}",
-        f"{first_name.lower()}{last_name[0].lower()}@{domain}",
-        f"{last_name.lower()}.{first_name.lower()}@{domain}",
-        f"{last_name.lower()}{first_name.lower()}@{domain}",
+        f"{first}.{last}@{domain}",
+        f"{first}{last}@{domain}",
+        f"{first_initial}{last}@{domain}",
+        f"{first}{last_initial}@{domain}",
+        f"{last}.{first}@{domain}",
+        f"{last}{first}@{domain}",
     ]
     return {"variations": variations}
 

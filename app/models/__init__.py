@@ -1,7 +1,7 @@
 """Database models"""
 from app.database import Base
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text
-from datetime import datetime
+from datetime import datetime, UTC
 
 class User(Base):
     """User model for authentication"""
@@ -13,8 +13,8 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
 
 class EmailVerification(Base):
     """Email verification results"""
@@ -27,7 +27,7 @@ class EmailVerification(Base):
     disposable = Column(Boolean, default=False)
     breach_found = Column(Boolean, default=False)
     details = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
 class ScanResult(Base):
     """Generic scan results"""
@@ -39,5 +39,5 @@ class ScanResult(Base):
     status = Column(String(50), nullable=False)  # pending, completed, failed
     result_data = Column(Text, nullable=True)
     user_id = Column(Integer, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     completed_at = Column(DateTime, nullable=True)

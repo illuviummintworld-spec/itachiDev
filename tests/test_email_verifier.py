@@ -11,24 +11,24 @@ def test_email_verifier_initialization():
 def test_valid_email_format():
     """Test email format validation"""
     verifier = EmailVerifier()
-    assert verifier._is_valid_format("test@example.com") == True
-    assert verifier._is_valid_format("user.name@domain.co.uk") == True
-    assert verifier._is_valid_format("invalid.email") == False
-    assert verifier._is_valid_format("@example.com") == False
-    assert verifier._is_valid_format("test@") == False
+    assert verifier._is_valid_format("test@example.com")
+    assert verifier._is_valid_format("user.name@domain.co.uk")
+    assert not verifier._is_valid_format("invalid.email")
+    assert not verifier._is_valid_format("@example.com")
+    assert not verifier._is_valid_format("test@")
 
 def test_disposable_email_detection():
     """Test disposable email detection"""
     verifier = EmailVerifier()
     result = verifier.verify_smtp("test@tempmail.com")
-    assert result["disposable"] == True
+    assert result["disposable"]
     
 def test_invalid_email_format():
     """Test handling of invalid email format"""
     verifier = EmailVerifier()
     result = verifier.verify_smtp("not-an-email")
     assert result["status"] == "invalid"
-    assert result["smtp_valid"] == False
+    assert not result["smtp_valid"]
 
 def test_mx_record_lookup():
     """Test MX record lookup"""

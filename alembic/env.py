@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from app.database import Base
-from app.models import *  # Import all models
+from app.models import User, EmailVerification, ScanResult  # Import specific models
 from app.config import settings
 
 # this is the Alembic Config object, which provides
